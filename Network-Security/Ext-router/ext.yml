@@ -1,7 +1,0 @@
----
-- hosts: Network-Security
-  become: true
-  tasks:
-    - name: Update the system
-      apt:
-        update_cache: yes
