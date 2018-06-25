@@ -1,0 +1,73 @@
+---
+- name: Playbook to install/bring up web server.
+  hosts: webserver
+  task:
+    - name: Install the required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - libjpeg-dev 
+        - zlib1g-dev 
+        - libpq-dev 
+        - python2 
+        - python-pip 
+
+    - name: Install virtual env
+      pip:
+        name: "{{ item }}"
+      with_items:
+        - virtualenv
+        - virtualenvwrapper
+
+    - name: Update the bash rc file with virtualenv
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        block: |
+          export WORKON_HOME=$HOME/.virtualenvs
+          source /usr/local/bin/virtualenvwrapper.sh
+
+    - name: Install packages from requirements.txt
+      pip:
+        requirements: "{{ ansible_env.HOME }}/vital/vital2.0/source/virtual_labs/vital_site/requirements.txt"
+
+
+    - name: Edit fstab
+      blockinfile:
+        path: /etc/fstab
+        block: |
+          Vlab-gluster1:/vlab /mnt/vlab-datastore glusterfs defaults 0 0
+
+    #TODO copy it from ssh server 
+    #- name: Copy config.ini file
+    #  copy:
+    #    src: " {{ ansible_env.HOME }} "
+    #    dest: "{{ ansible_env.HOME }}/vital/"
+    
+    - name: copy the apache2 sites
+      copy:
+        src: apacheConf/*
+        dest: /etc/apache2/sites-enabled
+
+    - name: Copy the services files
+      copy:
+        src: services/*
+        dest: /etc/systemd/system/
+
+    - name: Enable the services
+      service:
+        name: "{{ item }}"
+        state: enabled
+      with_items:
+        - vital_autostart_resources.service
+        - vital_listen_xen_stats.service
+        - vital_on_server_start.service
+
+    - name: Enable vital site
+      shell: a2ensite vital-dev2.poly.edu-le-ssl.conf
+
+    - name: start apache server
+      service:
+        name: apache2
+        state: started
+        
