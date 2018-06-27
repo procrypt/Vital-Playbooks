@@ -1,0 +1,14 @@
+[Unit]
+Description=vital course network start service
+After=network.target
+After=vital_listen_xen_stats.service
+
+[Service]
+Type=simple
+#Environment=statedir=/var/cache/foo
+#ExecStartPre=/usr/bin/mkdir -p ${statedir}
+ExecStart=/home/vital/.virtualenvs/vital/bin/python /home/vital/vital2.0/source/virtual_lab/vital_site/manage.py AutoStartVMs
+
+[Install]
+WantedBy=multi-user.target
+

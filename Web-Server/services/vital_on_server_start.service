@@ -1,0 +1,12 @@
+[Unit]
+Description=vital course network start service
+After=postgresql.service network.target
+
+[Service]
+#Environment=statedir=/var/cache/foo
+#ExecStartPre=/usr/bin/mkdir -p ${statedir}
+ExecStart=/home/vital/vital2.0/source/virtual_lab/vital_site/scripts/on_web_server_startup.sh
+
+[Install]
+WantedBy=multi-user.target
+

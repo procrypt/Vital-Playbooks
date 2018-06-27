@@ -1,0 +1,14 @@
+[Unit]
+Description=vtial web server service to get the xen server stats
+After=apache2.service
+
+[Service]
+Type=simple
+#Environment=statedir=/var/cache/foo
+#ExecStartPre=/usr/bin/mkdir -p ${statedir}
+ExecStart=/home/vital/vital2.0/source/virtual_lab/vital_site/scripts/listen_xen_stats.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
