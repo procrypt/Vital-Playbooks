@@ -1,0 +1,40 @@
+---
+- name: Update system
+  apt: update_cache=yes
+
+- name: Install the required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - make
+    - gcc
+    - binutils
+    - zlib1g
+    - libncurses-dev
+    - openssl
+    - libx11-dev
+    - uuid-dev
+    - libyajl-dev
+    - libaio-dev
+    - libglib2.0-dev
+    - libpixman-1-dev
+    - pkg-config
+    - bridge-utils
+    - iproute2
+    - bison
+    - flex
+    - gettext
+    - iasl
+    - build-essential
+    - ocaml-nox
+    - ocaml-findlib
+    - cmake
+    - markdown
+    - figlet
+    - libnl-3-dev
+    - liblzma-dev
+    - bin86
+    - bcc
+    - git
+    - python-dev

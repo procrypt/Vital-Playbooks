@@ -1,0 +1,17 @@
+---
+#- name: Download source
+#  git:
+#    repo: "https://github.com/xen-project/xen.git"
+#    dest: /home/abhishek/xen 
+#    version: stable-4.11  
+#
+#- name: Run ./configure
+#  shell: ./configure
+#  args:
+#    chdir: /home/abhishek/xen
+#
+- name: make install xen
+  make:
+   chdir: /home/abhishek/xen
+   params: world
+   
